@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منظم حصص النشاط أسبوعيًا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#f3f7fa;--card:#fff;--ink:#15445a;--muted:#6e7f8e;--line:#d7e2e8;
+ --green:#07a869;--blue:#3d7eb9;--teal:#0da9a6;--navy:#15445a;--gold:#c1b489;--gray:#c2c1c1;
+ --purple:#351375;--purple2:#7258a4;--cyan:#69cee3;--soft:#eef9f7;--soft2:#eff5fb;
+ --ok:#07a869;--warn:#8a6f2e;--warnbg:#fbf5e8;--shadow:0 12px 30px rgba(21,68,90,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 100% 0,rgba(105,206,227,.16),transparent 28%),radial-gradient(circle at 0 18%,rgba(13,169,166,.09),transparent 25%),linear-gradient(180deg,#f6fbfc 0,#f8fbfd 220px,#f3f7fa 100%);font-family:"Cairo",sans-serif;color:var(--ink)}
+.wrap{max-width:1260px;margin:auto;padding:22px}
+.hero{background:linear-gradient(180deg,#fdfefe 0%,#f8fbfd 100%);color:var(--navy);border-radius:28px;padding:20px 24px;border:1px solid #dfe8ee;box-shadow:0 16px 34px rgba(21,68,90,.07);position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;left:-90px;top:-60px;width:340px;height:340px;background:radial-gradient(circle,rgba(105,206,227,.23),transparent 64%)}
+.hero:after{content:"";position:absolute;right:-110px;bottom:-110px;width:360px;height:360px;background:radial-gradient(circle,rgba(61,126,185,.12),transparent 68%)}
+.hero-grid{position:absolute;inset:50% 0 0 0;background:linear-gradient(to right,rgba(21,68,90,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(21,68,90,.04) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.22),transparent 75%);pointer-events:none;animation:gridShift 18s linear infinite}
+.hero-top{display:grid;grid-template-columns:1.08fr .92fr;gap:22px;align-items:center;position:relative;z-index:1}
+.hero-copy{max-width:none;text-align:right}.hero-copy-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.hero-kicker{display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border-radius:999px;background:linear-gradient(180deg,#fbfefe,#f2faf8);border:1px solid #d8ebe4;color:#149173;font-size:13px;font-weight:800;box-shadow:0 8px 16px rgba(20,145,115,.08)}
+.hero-kicker .dot{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;position:relative}.hero-kicker .dot:before,.hero-kicker .dot:after{content:"";position:absolute;background:currentColor;left:50%;top:50%;transform:translate(-50%,-50%)}.hero-kicker .dot:before{width:2px;height:10px}.hero-kicker .dot:after{width:10px;height:2px}
+.hero-logo{display:flex;align-items:center;justify-content:center;min-width:165px;padding:10px 14px;border-radius:20px;background:linear-gradient(180deg,#ffffff,#fbfdfe);border:1px solid #dde8ee;box-shadow:0 12px 22px rgba(21,68,90,.08)}
+.hero-logo img{width:118px;height:auto;display:block;filter:brightness(0) saturate(100%) invert(21%) sepia(31%) saturate(904%) hue-rotate(160deg) brightness(92%) contrast(92%)}
+.hero-title{margin:0;line-height:1.03;font-size:62px;font-weight:900;color:#0f2f59;letter-spacing:-1px}.hero-title .subline{display:block;margin-top:4px;font-size:56px;font-weight:900;background:linear-gradient(90deg,#1f8faf 0%,#377dd8 45%,#7564de 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:12px 0 0;font-size:15px;line-height:1.9;color:#718196;max-width:690px}
+.hero-note{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 14px;border-radius:16px;background:linear-gradient(180deg,#ffffff,#f7fbfd);border:1px solid #dfe8ee;font-size:12px;line-height:1.75;color:#587285;box-shadow:0 10px 18px rgba(21,68,90,.05)}.hero-note b{color:var(--navy)}
+.hero-stage{position:relative;min-height:330px;display:flex;align-items:center;justify-content:center}.hero-stage .orbit{position:absolute;width:84%;aspect-ratio:1/1;border-radius:50%;border:2px dashed rgba(61,126,185,.18);top:20px;left:7%;animation:spinSlow 28s linear infinite}.hero-stage .glow{position:absolute;left:4%;top:42px;width:84%;height:72%;border-radius:30px;background:linear-gradient(180deg,rgba(173,216,234,.42),rgba(180,203,238,.28));box-shadow:0 26px 40px rgba(21,68,90,.10);animation:pulseGlow 6s ease-in-out infinite}
+.doc-stack{position:relative;width:100%;height:100%}.doc-card{position:absolute;width:220px;height:295px;border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(246,251,254,.96));border:1px solid rgba(220,231,238,.92);box-shadow:0 18px 34px rgba(21,68,90,.12);backdrop-filter:blur(3px);padding:16px 16px 14px;overflow:hidden;animation:cardFloat 7s ease-in-out infinite}.doc-card:before{content:"";position:absolute;right:0;left:0;top:58px;height:16px;background:linear-gradient(90deg,rgba(61,126,185,.12),rgba(105,206,227,.16))}
+.doc-card h3{margin:60px 0 8px;font-size:19px;line-height:1.45;color:var(--navy)}.doc-card .lines{display:grid;gap:9px;margin-top:10px}.doc-card .lines span{display:block;height:9px;border-radius:999px;background:#e5edf3}.doc-card .lines span:nth-child(1){width:76%}.doc-card .lines span:nth-child(2){width:64%}.doc-card .lines span:nth-child(3){width:52%}
+.doc-card .meta{position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:7px;font-size:12px;color:#6b8595}.doc-card .meta i{display:inline-block;width:12px;height:12px;border-radius:50%;background:#2db595}.doc-card .label-top{position:absolute;top:16px;right:18px;font-size:14px;font-weight:800;color:#b8c5cf}
+.doc-card.primary{right:96px;top:10px;transform:rotate(-7deg);animation-delay:0s}.doc-card.secondary{right:230px;top:34px;transform:rotate(3deg);opacity:.74;animation-delay:1.2s}.doc-card.tertiary{right:36px;top:102px;transform:rotate(8deg);opacity:.90;animation-delay:.6s}
+.hero-chip{position:absolute;display:inline-flex;align-items:center;gap:8px;padding:13px 18px;border-radius:20px;background:linear-gradient(180deg,#ffffff,#fbfdfe);border:1px solid #dde8ee;box-shadow:0 12px 20px rgba(21,68,90,.08);font-size:15px;font-weight:800;color:#5c7082;animation:chipFloat 6s ease-in-out infinite}.hero-chip i{width:20px;height:20px;border-radius:7px;border:2px solid currentColor;display:inline-grid;place-items:center;font-style:normal;font-size:11px;color:#377dd8}
+.hero-chip.top{top:28px;right:20px;animation-delay:.8s}.hero-chip.bottom{bottom:24px;left:14px;color:#2e987a;animation-delay:1.5s}.hero-chip.top i{color:#647ee4}
+.hero-mini-dot{position:absolute;width:12px;height:12px;border-radius:50%;background:#2db595;left:12%;top:70%;animation:dotPulse 4s ease-in-out infinite}.hero-mini-dot.blue{background:#4d88e1;left:auto;right:10%;top:52%;animation-delay:1.2s}
+.hero>*,.hero-top>*{position:relative;z-index:1}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes pulseGlow{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.03);opacity:1}}@keyframes cardFloat{0%,100%{transform:translateY(0) rotate(var(--rot,0deg))}50%{transform:translateY(-8px) rotate(var(--rot,0deg))}}@keyframes chipFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}@keyframes dotPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.25);opacity:1}}@keyframes gridShift{from{background-position:0 0,0 0}to{background-position:34px 0,0 34px}}
+.layout{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px;align-items:start}
+.panel,.card{background:linear-gradient(180deg,#fbfdfe,#f7fafc);border:1px solid #dbe5eb;border-radius:22px;box-shadow:0 8px 22px rgba(20,48,68,.04)}
+.panel{padding:18px 20px;position:static}.panel h2,.card h2{margin:0;font-size:19px;color:var(--navy)}.panel{background:linear-gradient(180deg,#ffffff,#f8fbfd);border-radius:24px}.panel>.sub{margin-bottom:2px}.panel .check{display:inline-flex;max-width:100%;margin-inline-end:10px;vertical-align:top}.panel .save{display:inline-block;margin-inline-start:10px}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;align-items:start}
+.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:#36596b}
+.field select,.field input{width:100%;padding:11px 12px;border:1px solid #d6e4eb;border-radius:14px;background:linear-gradient(180deg,#ffffff,#fbfdfe);font-family:"Cairo";font-size:13px;color:var(--ink);outline:none}
+.field select:focus,.field input:focus{border-color:#77a9ba;box-shadow:0 0 0 4px #eef8fa}
+.check{display:flex;gap:8px;align-items:flex-start;margin-top:10px;padding:10px;border-radius:14px;background:linear-gradient(180deg,#fcfeff,#f5fafc);border:1px solid #dbe6ec;font-size:12px}
+.check input{margin-top:4px;accent-color:var(--teal)}
+.check.optional{background:#fff9eb;border-color:#efdca7}
+.save{margin-top:10px;font-size:11px;color:var(--muted)}
+.main{display:grid;gap:15px}.card{padding:18px}
+.title{display:flex;align-items:center;gap:9px;margin-bottom:12px}.step{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(61,126,185,.14),rgba(13,169,166,.14));color:var(--blue);font-weight:900}
+.big{font-size:22px;font-weight:800;line-height:1.8}.big em{font-style:normal;color:var(--teal)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.kpi{position:relative;padding:16px 15px 14px;border:1px solid #dbe7ed;border-radius:20px;background:linear-gradient(180deg,#fcfeff,#f7fbfd);overflow:hidden;box-shadow:0 8px 20px rgba(21,68,90,.05)}
+.kpi:before{content:"";position:absolute;top:0;right:0;left:0;height:5px;background:var(--blue)}
+.kpi small{display:block;font-size:12px;font-weight:800;color:var(--muted);line-height:1.7}.kpi strong{display:block;font-size:38px;font-weight:900;line-height:1;color:var(--navy);margin-top:8px}.kpi:nth-child(1){background:linear-gradient(180deg,#fdfffe,#f4fbf8)}.kpi:nth-child(1):before{background:var(--green)}.kpi:nth-child(1) strong{color:var(--green)}.kpi:nth-child(2){background:linear-gradient(180deg,#feffff,#f2fbfb)}.kpi:nth-child(2):before{background:var(--teal)}.kpi:nth-child(2) strong{color:var(--teal)}.kpi:nth-child(3){background:linear-gradient(180deg,#feffff,#f2f7fc)}.kpi:nth-child(3):before{background:var(--blue)}.kpi:nth-child(3) strong{color:var(--blue)}.kpi:nth-child(4){background:linear-gradient(180deg,#fffdff,#f8f4fd)}.kpi:nth-child(4):before{background:var(--purple2)}.kpi:nth-child(4) strong{color:var(--purple2)}
+.eq{margin-top:11px;padding:13px 15px;border-radius:15px;background:linear-gradient(90deg,#f4f8fc,#edf5fb);border:1px solid #d2e2f0;border-right:5px solid var(--blue);font-size:14px;color:var(--navy)}.eq b{color:var(--blue)}
+.okbox{padding:15px;border-radius:16px;background:#eaf8f3;border:1px solid #ccebdd;color:#08745e;font-size:14px;font-weight:700}
+.tablewrap{overflow:auto;border:1px solid #dce7ed;border-radius:18px;background:linear-gradient(180deg,#ffffff,#f9fcfd)}
+table{width:100%;border-collapse:collapse;min-width:820px}th,td{padding:10px 10px;border-bottom:1px solid var(--line);font-size:12px;text-align:right;vertical-align:top}
+th{background:#f6f9fb;color:#536c7d;font-weight:800}.center{text-align:center}
+.badge{display:inline-flex;padding:4px 8px;border-radius:999px;background:#edf7fb;color:#245e78;font-size:11px}
+.badge.ok{background:#e9f8f2;color:#08765f}
+.classTitle{font-weight:800;color:#0b5368}
+.subjectCell{display:flex;flex-wrap:wrap;gap:5px}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eef6fb;color:#245c78;font-size:11px}
+.pill.teal{background:#e9f8f3;color:#08765f}
+.note{margin-top:11px;padding:12px 14px;border-radius:14px;background:var(--warnbg);border:1px solid #f0dca7;color:#755415;font-size:12px}
+.summaryGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.classCard{border:1px solid #dbe6ec;border-radius:18px;padding:13px;background:linear-gradient(180deg,#ffffff,#f8fbfd)}
+.classCard h3{margin:0 0 8px;font-size:15px}.classCard ul{margin:0;padding-right:18px}.classCard li{margin:4px 0;font-size:12px}
+.weekTable td{min-width:160px}.weekNo{font-weight:800;white-space:nowrap}.empty{color:#9aa8b5}
+.status{margin-top:10px;padding:12px 14px;border-radius:14px;background:#eaf8f3;border:1px solid #ccebdd;color:#08765f;font-weight:700;font-size:12px}
+.source{margin-top:11px;padding:11px 13px;border-radius:14px;background:linear-gradient(90deg,#f8fbfd,#f2f8fb);border:1px solid #dbe6ec;font-size:11px;color:#64778a}
+.hidden{display:none!important}
+.group-plan{margin-top:14px;padding:14px;border-radius:18px;border:1px solid #dbe6ec;background:linear-gradient(180deg,#fcfeff,#f6fbfd)}.group-plan h3{margin:0 0 6px;font-size:16px;color:var(--navy)}.group-plan p{margin:0 0 10px;font-size:12px;line-height:1.9;color:#667b8a}.group-plan .rows{display:grid;gap:8px}.group-plan .row{padding:10px 12px;border-radius:14px;background:#fff;border:1px solid #e3edf3}.group-plan .row strong{color:var(--navy)}.group-plan .row small{display:block;margin-top:4px;color:#6f8190;font-size:11px;line-height:1.8}
+.actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-start;flex-wrap:wrap}.btn{border:0;border-radius:14px;padding:10px 13px;font-family:"Cairo";font-weight:800;cursor:pointer;box-shadow:0 6px 14px rgba(21,68,90,.08)}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff}.btn.secondary{background:linear-gradient(180deg,#ffffff,#f1f6fa);color:#294b63;border:1px solid #dce6ec}
+.print-layout{display:none}.print-page{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px}.print-topline{height:10px;border-radius:999px;background:linear-gradient(90deg,#7ec8b6 0 33%,#1aa4a5 33% 66%,#0a4559 66% 100%);margin-bottom:14px}.print-header{display:grid;grid-template-columns:260px 1fr;gap:14px;align-items:start}.print-meta{border:1px solid var(--line);border-radius:16px;padding:12px;background:#f8fbfd}.print-meta .mini{font-size:11px;color:var(--muted)}.print-meta .line{font-weight:800;margin-top:6px}.print-title h1{margin:0;font-size:28px;color:#0a4559;line-height:1.4}.print-title p{margin:8px 0 0;font-size:13px;color:#6a7b8d}.print-info{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.print-box{border:1px solid var(--line);border-radius:16px;padding:11px;background:#fff}.print-box small{display:block;font-size:11px;color:var(--muted)}.print-box strong{display:block;font-size:26px;color:#0f5f7a;margin-top:2px}.print-section{margin-top:16px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.print-section-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#0a4559;color:#fff}.print-section-head.alt{background:#0b8c87}.print-section-head h2{margin:0;font-size:18px}.print-num{width:32px;height:32px;border-radius:12px;background:#fff;color:#0a4559;display:grid;place-items:center;font-weight:800}.print-note{padding:12px 14px;background:#f7fbfc;font-size:12px;color:#617588;border-bottom:1px solid var(--line)}.print-table{width:100%;border-collapse:collapse;min-width:0}.print-table th,.print-table td{padding:8px 8px;border-bottom:1px solid var(--line);font-size:11px;text-align:right}.print-table th{background:#f1f6fa;color:#4e6678;font-weight:800}.print-chip{display:inline-flex;padding:4px 7px;border-radius:999px;background:#e9f8f3;color:#08765f;font-size:10px}.print-week-table th,.print-week-table td{font-size:10px;padding:7px 6px}.print-week-table td{vertical-align:top}.print-page-break{page-break-after:always;break-after:page}
+
+.section-tools{margin-inline-start:auto;display:flex;gap:7px}.print-btn{border:1px solid rgba(61,126,185,.35);background:#eef5fb;color:var(--navy);border-radius:10px;padding:7px 10px;font-family:"Cairo";font-size:11px;font-weight:800;cursor:pointer}.print-btn:hover{background:#e7f1f9}
+/* Professional print sheet inspired by the supplied reference */
+.print-layout{display:none}
+.print-page{background:#fff;color:#10384a;font-family:"Cairo",sans-serif;direction:rtl}
+.pr-bar{height:8px;display:grid;grid-template-columns:1fr 1.1fr 1fr;margin-bottom:10px}.pr-bar span:nth-child(1){background:var(--navy)}.pr-bar span:nth-child(2){background:var(--blue)}.pr-bar span:nth-child(3){background:var(--cyan)}
+.pr-head{display:grid;grid-template-columns:1fr 235px;gap:12px;align-items:stretch;padding:2px 4px 10px;border-bottom:2px solid #d9e5e9}
+.pr-head-main{padding:4px 2px}.pr-kicker{font-size:10px;color:var(--purple);font-weight:800;margin-bottom:3px}.pr-title{font-size:24px;line-height:1.35;font-weight:800;color:var(--navy);margin:0}.pr-subtitle{font-size:11px;color:#718196;margin-top:5px}.pr-side{display:flex;flex-wrap:nowrap;align-items:stretch;gap:8px}.pr-side .pr-info{border:1px solid #dce6ee;border-radius:13px;padding:9px 10px;background:#fbfdfe;flex:1 1 auto;min-width:0}.pr-info small{display:block;color:#708195;font-size:9px}.pr-info b{display:block;font-size:11px;margin-top:3px}.pr-target{border-radius:14px;background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;display:grid;place-items:center;text-align:center;padding:7px;flex:0 0 auto}.pr-target strong{font-size:28px;line-height:1}.pr-target span{display:block;font-size:8.5px;margin-top:3px;line-height:1.4}.pr-strip{margin:8px 4px 6px;border:1px solid #d4e3f0;border-right:5px solid var(--blue);border-radius:14px;background:linear-gradient(90deg,#f5f9fd,#edf5fb);padding:7px 11px;font-size:9.5px;color:#536e7b;line-height:1.55}.pr-strip b{color:var(--blue)}.pr-section-title{display:flex;align-items:center;justify-content:space-between;margin:8px 4px 6px}.pr-section-title h2{font-size:17px;margin:0;color:var(--navy)}.pr-number{width:30px;height:30px;border-radius:10px;background:rgba(61,126,185,.14);color:var(--blue);display:grid;place-items:center;font-weight:800;font-size:16px}.pr-table-wrap{margin:0 4px;border:1px solid #b8cfd8;border-radius:14px;overflow:hidden}.pr-table{width:100%;border-collapse:collapse;min-width:0;table-layout:fixed}.pr-table th{background:var(--navy);color:#fff;padding:6px 6px;font-size:9.2px;text-align:center;font-weight:800;border-left:1px solid rgba(255,255,255,.12)}.pr-table td{padding:5px 6px;font-size:9px;border-bottom:1px solid #d7e4e8;border-left:1px solid #edf2f4;vertical-align:middle;text-align:center}.pr-table tbody tr:nth-child(even){background:#f8fbfc}.pr-table td.subject{text-align:right;font-weight:700;color:#174c60}.pr-table td.execution{text-align:right}.pr-chip{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(61,126,185,.35);background:#eef5fb;color:var(--navy);border-radius:999px;padding:2px 6px;font-weight:800;font-size:8.5px}.pr-total td{background:#eef5fb!important;font-weight:800;color:var(--navy)}.pr-status{margin:5px 4px 0;border-radius:11px;background:linear-gradient(90deg,#f4f8fc,#edf5fb);border:1px solid #d3e1ef;color:var(--navy);padding:5px 8px;font-size:8.6px;font-weight:700}.pr-note{margin:8px 4px 0;border-radius:12px;background:#fbf5e8;border:1px solid rgba(193,180,137,.65);color:#6f5b23;padding:7px 10px;font-size:8.7px;line-height:1.6}.pr-week th:first-child{width:65px}.pr-week td:first-child{font-weight:800;color:#0a4559;background:#f1f7f9}.pr-week td{height:29px}.pr-week .pr-chip{margin:1px 1px}.pr-footer{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin:8px 5px 0;color:#7f8f99;font-size:7.5px}.pr-footer .credit{font-weight:700;color:var(--navy)}.site-credit{margin-top:16px;padding:14px 18px;border:1px solid #dce6ec;border-radius:20px;background:linear-gradient(180deg,#fcfeff,#f7fafc);font-size:13px;color:#5f7483;text-align:center}.site-credit strong{color:var(--purple)}@media (hover:hover){.kpi:hover,.classCard:hover,.panel:hover,.card:hover{transform:translateY(-2px);transition:.25s ease;box-shadow:0 12px 26px rgba(21,68,90,.08)}}.print-page-break{page-break-after:always;break-after:page}
+
+#printPage3 .pr-bar{height:7px;margin-bottom:7px}
+#printPage3 .pr-head{grid-template-columns:1fr 235px;gap:12px;padding:2px 4px 8px}
+#printPage3 .pr-head-main{padding:3px 2px}
+#printPage3 .pr-kicker{font-size:10px;margin-bottom:2px}
+#printPage3 .pr-title{font-size:24px;line-height:1.3}
+#printPage3 .pr-subtitle{font-size:10.5px;margin-top:4px}
+#printPage3 .pr-side{display:grid;grid-template-columns:1fr 92px;gap:8px;align-items:stretch}
+#printPage3 .pr-info{padding:8px 10px;border-radius:12px;flex:1 1 auto;min-width:0}
+#printPage3 .pr-info small{font-size:8.8px}
+#printPage3 .pr-info b{font-size:10.8px;margin-top:2px}
+#printPage3 .pr-target{padding:7px;border-radius:13px}
+#printPage3 .pr-target strong{font-size:28px}
+#printPage3 .pr-target span{font-size:8.5px;line-height:1.35}
+#printPage3 .pr-strip{margin:7px 4px 6px;padding:7px 11px;font-size:9.6px;line-height:1.5}
+#printPage3 .pr-section-title{margin:7px 4px 5px}
+#printPage3 .pr-section-title h2{font-size:18px}
+#printPage3 .pr-number{width:30px;height:30px;font-size:15px}
+#printPage3 .pr-table th{padding:6px 6px;font-size:9.6px}
+#printPage3 .pr-table td{padding:5px 6px;font-size:9.3px;line-height:1.35}
+#printPage3 .pr-chip{font-size:8.4px;padding:2px 6px}
+#printPage3 .pr-status{margin-top:6px;padding:6px 9px;font-size:8.8px}
+#printPage3 .pr-note{margin-top:6px;padding:6px 9px;font-size:8.5px;line-height:1.45}
+#printPage3 .pr-footer{margin-top:6px;font-size:7.6px}
+@media(max-width:1100px){.hero-top{grid-template-columns:1fr}.hero-title{font-size:52px}.hero-title .subline{font-size:44px}.hero-stage{min-height:300px;order:2}.hero-copy{order:1}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:960px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.wrap{padding:12px}.hero{padding:16px 14px}.hero-top{grid-template-columns:1fr;gap:16px}.hero-copy-top{flex-direction:column;align-items:stretch}.hero-logo{justify-self:stretch}.hero-title{font-size:36px}.hero-title .subline{font-size:31px}.hero p{font-size:14px}.hero-stage{min-height:250px}.doc-card{width:155px;height:215px;padding:12px}.doc-card h3{margin-top:50px;font-size:14px}.doc-card.primary{right:68px;top:10px}.doc-card.secondary{right:152px;top:24px}.doc-card.tertiary{right:18px;top:82px}.hero-chip{font-size:12px;padding:9px 12px}.hero-chip.top{top:8px;right:8px}.hero-chip.bottom{bottom:6px;left:4px}.fields{grid-template-columns:1fr}.panel{padding:15px}.panel .check{display:flex;margin-inline-end:0}.cards,.summaryGrid{grid-template-columns:1fr}.group-plan{padding:12px}.kpi strong{font-size:32px}}
+@media print{
+  @page{size:A4 landscape;margin:8mm}
+  html,body{background:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .wrap{max-width:none!important;padding:0!important;margin:0!important}
+  .hero,.layout,.site-credit{display:none!important}
+  .print-layout{display:block!important}
+  .print-page{display:block!important;width:100%;margin:0;padding:0}
+  body[data-print-target="3"] #printPages4{display:none!important}
+  body[data-print-target="4"] #printPage3{display:none!important}
+  body[data-print-target="3"] #printPage3{page-break-after:auto!important;break-after:auto!important}
+  body[data-print-target="3"] #printPage3 .pr-head,body[data-print-target="both"] #printPage3 .pr-head,#printPage3 .pr-head,#printPage3 .pr-bar,#printPage3 .pr-strip{page-break-inside:avoid!important;break-inside:avoid!important}
+  #printPage3 .pr-table-wrap,#printPages4 .pr-table-wrap{page-break-inside:auto!important;break-inside:auto!important}
+
+  #printPages4 .print-page:last-child{page-break-after:auto!important;break-after:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-top">
+      <div class="hero-copy">
+        <div class="hero-copy-top">
+          <div class="hero-kicker"><span class="dot"></span> حاسبة ذكية لتوزيع 10٪</div>
+          <div class="hero-logo"><img src="data:image/png;base64,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" alt="شعار وزارة التعليم"></div>
+        </div>
+        <h1 class="hero-title">منظم حصص النشاط<span class="subline">ضمن نسبة 10٪</span></h1>
+        <p>أداة مبسطة وذكية تساعد المدارس على قراءة الحصص الرسمية، واستكمال النسبة من المواد الدراسية، ثم توضيح طريقة التوزيع أسبوعيًا على مستوى الشعب بصورة واضحة وعملية.</p>
+        <div class="hero-note"><b>فكرة النموذج:</b> تختار المرحلة والفصل وعدد الشعب، ثم يعرض لك النموذج صورة مباشرة للحصص الرسمية وما تم الاستفادة منه من المواد.</div>
+      </div>
+      <div class="hero-stage">
+        <div class="orbit"></div>
+        <div class="glow"></div>
+        <div class="doc-stack">
+          <div class="hero-chip top"><i>PDF</i> دليل منظم</div>
+          <div class="doc-card secondary" style="--rot:3deg">
+            <div class="label-top">أداة 02</div>
+            <h3>ملخص نسبة 10٪ للمواد</h3>
+            <div class="lines"><span></span><span></span><span></span></div>
+            <div class="meta"><i></i> توزيع متوازن</div>
+          </div>
+          <div class="doc-card primary" style="--rot:-7deg">
+            <div class="label-top">أداة 01</div>
+            <h3>منظم حصص النشاط الأسبوعي</h3>
+            <div class="lines"><span></span><span></span><span></span></div>
+            <div class="meta"><i></i> عرض مباشر</div>
+          </div>
+          <div class="doc-card tertiary" style="--rot:8deg">
+            <div class="label-top">أداة 03</div>
+            <h3>توزيع أسبوعي للشعب</h3>
+            <div class="lines"><span></span><span></span><span></span></div>
+            <div class="meta"><i></i> تنفيذ عملي</div>
+          </div>
+          <div class="hero-chip bottom"><i>↻</i> حسبة تلقائية</div>
+          <span class="hero-mini-dot"></span><span class="hero-mini-dot blue"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div class="layout">
+    <aside class="panel">
+      <h2>الإعداد السريع</h2>
+      <div class="sub">تظهر فقط الخيارات التي تخص حالتك.</div>
+      <div class="fields">
+        <div class="field"><label>نوع الخطة</label><select id="planType"></select></div>
+        <div class="field"><label>المرحلة</label><select id="stage"></select></div>
+        <div class="field"><label>الصف / السنة</label><select id="grade"></select></div>
+        <div class="field hidden" id="pathWrap"><label>المسار</label><select id="path"></select></div>
+        <div class="field"><label>الفصل الدراسي</label><select id="term"><option value="1">الفصل الأول</option><option value="2">الفصل الثاني</option></select></div>
+        <div class="field"><label>أسابيع التنفيذ الفعلية</label><input id="weeks" type="number" min="1" max="20" value="17"></div>
+        <div class="field"><label>عدد الشعب</label><input id="classes" type="number" min="1" max="30" value="5"></div>
+        <div class="field" id="excludeWrap"><label>استثناء مواد / تخصصات من نسبة 10٪ (اختيار متعدد)</label><select id="excludedSubject" multiple size="4"><option value="">بدون استثناء</option></select><div class="sub" style="margin-top:5px">اضغط مع Ctrl (أو ⌘ على ماك) لاختيار أكثر من مادة. مثال: إذا كان رائد النشاط معلم رياضيات وآخر لغة إنجليزية، استثنِ المادتين حتى لا تُستخدم حصصهما ضمن الاستكمال.</div></div>
+        </div>
+      <label class="check optional hidden" id="lowerExtraWrap"><input id="lowerExtra" type="checkbox"><span><strong>إضافة حصة نشاط رابعة</strong><br>الصفوف الأولية محققة أصلًا بـ3 حصص. فعّل هذا الخيار فقط إذا رغبت المدرسة في حصة رابعة والاستفادة من 10٪.</span></label>
+      <label class="check" id="rotateWrap"><input id="rotate" type="checkbox" checked><span><strong>تجميع المواد بشكل متتالٍ مع توزيع بداياتها بين الشعب</strong><br>عند التفعيل تظهر المادة نفسها في أسابيع متصلة داخل الشعبة، مع تغيير نقطة البداية بين الشعب لتقليل التطابق الكامل.</span></label>
+      <div class="actions"><button class="btn primary" onclick="printReport('both')">طباعة ملخص ١٠٪ وجدول التنفيذ</button><button class="btn secondary" onclick="location.reload()">تحديث</button></div><div class="save">الحفظ تلقائي على هذا الجهاز.</div>
+    </aside>
+
+    <main class="main">
+      <section class="card">
+        <div class="title"><span class="step">1</span><h2>الخلاصة المباشرة</h2></div>
+        <div id="lowerAchieved" class="okbox hidden"></div>
+        <div class="big" id="headline"></div>
+        <div class="cards" id="kpis">
+          <div class="kpi"><small>الحصص الرسمية لكل شعبة أسبوعيًا</small><strong id="official">0</strong></div>
+          <div class="kpi"><small>الاستكمال من المواد لكل شعبة أسبوعيًا</small><strong id="topup">0</strong></div>
+          <div class="kpi"><small>إجمالي النشاط المستهدف أسبوعيًا</small><strong id="target">3</strong></div>
+          <div class="kpi"><small>عدد الشعب</small><strong id="classesKpi">0</strong></div>
+        </div>
+        <div class="eq" id="equation"></div>
+        <div class="note hidden" id="excludedNotice"></div>
+        <div class="source" id="sourceNote"></div>
+      </section>
+
+      <section class="card" id="summaryCard">
+        <div class="title"><span class="step">2</span><h2>المواد المستفاد منها بنسبة 10٪ لكل شعبة</h2></div>
+        <div class="sub" style="margin-bottom:10px">كل سطر يوضح المادة التي تم الاستفادة من حصتها ضمن نسبة 10٪، وعدد الأسابيع التي تظهر فيها في الشعبة.</div>
+        <div class="summaryGrid" id="classSummary"></div>
+      </section>
+
+      <section class="card" id="sourceCard">
+        <div class="title"><span class="step">3</span><h2>ملخص نسبة ١٠٪ للمواد</h2><div class="section-tools"><button class="print-btn" onclick="printReport('3')">طباعة ملخص نسبة ١٠٪ للمواد</button></div></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr>
+              <th>المادة</th>
+              <th class="center">حصصها أسبوعيًا</th>
+              <th class="center">سقف 10٪ لكل شعبة</th>
+              <th class="center">المستخدم لكل شعبة</th>
+              <th>الصيغة التنفيذية</th>
+              <th class="center">إجمالي جميع الشعب</th>
+            </tr></thead>
+            <tbody id="sourceRows"></tbody>
+          </table>
+        </div>
+        <div class="status" id="status"></div>
+        <div class="group-plan" id="groupPlan">
+          <h3>مقترح التجميع المتتالي للمواد</h3>
+          <p>هذا المقترح يجمع المادة نفسها في أسابيع متتالية داخل الشعبة حتى يسهل التنفيذ في الجدول المدرسي، ثم يوزّع بداية المواد بين الشعب بشكل أبسط.</p>
+          <div class="rows" id="groupPlanRows"></div>
+        </div>
+      </section>
+
+      <section class="card" id="weeklyCard">
+        <div class="title"><span class="step">4</span><h2>جدول التنفيذ الأسبوعي حسب الشعب</h2><div class="section-tools"><button class="print-btn" onclick="printReport('4')">طباعة جدول التنفيذ الأسبوعي</button></div></div>
+        <div class="sub" style="margin-bottom:10px">كل خلية توضح المواد التي تتحول حصصها للنشاط في الشعبة خلال ذلك الأسبوع.</div>
+        <div class="tablewrap">
+          <table class="weekTable">
+            <thead id="weekHead"></thead>
+            <tbody id="weekBody"></tbody>
+          </table>
+        </div>
+        <div class="note">بيانات وجود المادة في الفصل الأول أو الثاني مأخوذة من نموذج الحصص الأسبوعية للإصدار الخامس، وتمت مراجعة أسماء مواد ومسارات الثانوية مقابل بنية الإصدار السادس السنوية. الإصدار السادس يعرض الثانوية سنويًا ولا يقسم المواد أسبوعيًا حسب الفصل.</div>
+      </section>
+    </main>
+  </div>
+
+  
+
+  <div class="print-layout" id="printLayout">
+    <section class="print-page print-page-break" id="printPage3">
+      <div class="pr-bar"><span></span><span></span><span></span></div>
+      <div class="pr-strip" id="prStrip3">—</div>
+      <div class="pr-head">
+        <div class="pr-head-main">
+          <div class="pr-kicker">نموذج تنظيمي مساعد لتوزيع حصص النشاط ضمن نسبة 10٪</div>
+          <h1 class="pr-title">تنظيم حصص النشاط ضمن نسبة 10٪ من الجدول الأسبوعي</h1>
+          <div class="pr-subtitle" id="prSubtitle3">خطة منظمة للاستفادة من حصص المواد وفق المرحلة والفصل وعدد الشعب.</div>
+        </div>
+        <div class="pr-side">
+          <div class="pr-info"><small>المرحلة والصف</small><b id="prLabel3">—</b><small style="margin-top:5px">الفصل والأسابيع</small><b id="prMeta3">—</b></div>
+          <div class="pr-target"><div><strong id="prTarget3">3</strong><span>حصص نشاط<br>لكل شعبة أسبوعيًا</span></div></div>
+</div>
+      </div>
+      <div class="pr-section-title"><h2>ملخص نسبة ١٠٪ للمواد</h2><span class="pr-number">3</span></div>
+      <div class="pr-table-wrap"><table class="pr-table"><thead><tr><th style="width:18%">المادة</th><th style="width:11%">حصصها أسبوعيًا</th><th style="width:12%">سقف 10٪ لكل شعبة</th><th style="width:12%">المستخدم لكل شعبة</th><th style="width:31%">الصيغة التنفيذية</th><th style="width:16%">إجمالي جميع الشعب</th></tr></thead><tbody id="prSourceRows"></tbody></table></div>
+      <div class="pr-status" id="prStatus3">—</div>
+      <div class="pr-note">ملاحظة تنظيمية: هذا الجدول يوضح طريقة الاستفادة من المواد على مستوى الشعبة. ويجب مراعاة ضوابط الخطة الدراسية والحد المسموح لكل مادة عند التطبيق.</div>
+      <div class="pr-foot"><div class="pr-footer"><span>ملخص نسبة ١٠٪ للمواد</span></div>
+    </section>
+    <div id="printPages4"></div>
+  </div>
+</div>
+
+<script>
+const PATHS={general:'المسار العام',cs:'علوم الحاسب والهندسة',health:'الصحة والحياة',business:'إدارة الأعمال',sharia:'المسار الشرعي'};
+const PLAN_TYPES={general:'التعليم العام',tahfiz:'تحفيظ القرآن الكريم',chinese:'المدارس المطبقة للغة الصينية'};
+const STAGES={
+ general:{lower:'الصفوف الأولية',upper:'الصفوف العليا',middle:'المرحلة المتوسطة',secondary:'المرحلة الثانوية'},
+ tahfiz:{lower:'الصفوف الأولية',upper:'الصفوف العليا',middle:'المرحلة المتوسطة'},
+ chinese:{middle:'المرحلة المتوسطة'}
+};
+const GRADE_LABELS={
+ lower:{1:'الصف الأول',2:'الصف الثاني',3:'الصف الثالث'},
+ upper:{4:'الصف الرابع',5:'الصف الخامس',6:'الصف السادس'},
+ middle:{1:'أول متوسط',2:'ثاني متوسط',3:'ثالث متوسط'},
+ secondary:{1:'الأول الثانوي — السنة المشتركة',2:'الثاني الثانوي',3:'الثالث الثانوي'}
+};
+
+const P={
+ lower:{
+  1:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',8],['الرياضيات',5],['العلوم',3],['اللغة الإنجليزية',3],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',3],['المهارات الحياتية والأسرية',1]],
+  2:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',7],['الرياضيات',6],['العلوم',3],['اللغة الإنجليزية',3],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',3],['المهارات الحياتية والأسرية',1]],
+  3:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',6],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',3],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',3],['المهارات الحياتية والأسرية',1]]
+ },
+ upper:{
+  4:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',5],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',3],['المهارات الرقمية',2],['التربية الفنية',1],['التربية البدنية والدفاع عن النفس',2],['المهارات الحياتية والأسرية',1]],
+  5:null,6:null
+ },
+ middle:{
+  1:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',5],['الدراسات الاجتماعية',3],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',4],['المهارات الرقمية',2],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',2],['المهارات الحياتية والأسرية',1]],
+  2:null,
+  3:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',4],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',4],['المهارات الرقمية',2],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',2],['المهارات الحياتية والأسرية',1],['التفكير الناقد',2]]
+ }
+};
+P.upper[5]=P.upper[4];P.upper[6]=P.upper[4];P.middle[2]=P.middle[1];
+
+const T={
+ lower:{
+  1:[['القرآن الكريم والدراسات الإسلامية',9],['اللغة العربية',8],['الرياضيات',5],['العلوم',3],['اللغة الإنجليزية',3],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',3],['المهارات الحياتية والأسرية',1]],
+  2:[['القرآن الكريم والدراسات الإسلامية',9],['اللغة العربية',7],['الرياضيات',6],['العلوم',3],['اللغة الإنجليزية',3],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',3],['المهارات الحياتية والأسرية',1]],
+  3:[['القرآن الكريم والدراسات الإسلامية',9],['اللغة العربية',6],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',3],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',3],['المهارات الحياتية والأسرية',1]]
+ },
+ upper:{
+  4:[['القرآن الكريم والدراسات الإسلامية',8],['التجويد',1],['اللغة العربية',5],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',3],['المهارات الرقمية',2],['التربية الفنية',1],['التربية البدنية والدفاع عن النفس',2],['المهارات الحياتية والأسرية',1]],
+  5:null,6:null
+ },
+ middle:{
+  1:[['القرآن الكريم والدراسات الإسلامية',8],['التجويد',1],['اللغة العربية',5],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',4],['المهارات الرقمية',2],['التربية الفنية',1],['التربية البدنية والدفاع عن النفس',1],['المهارات الحياتية والأسرية',1]],
+  2:null,
+  3:[['القرآن الكريم والدراسات الإسلامية',7],['التجويد',1],['اللغة العربية',4],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',4],['المهارات الرقمية',2],['التربية الفنية',1],['التربية البدنية والدفاع عن النفس',1],['المهارات الحياتية والأسرية',1],['التفكير الناقد',2]]
+ }
+};
+T.upper[5]=T.upper[4];T.upper[6]=T.upper[4];T.middle[2]=T.middle[1];
+
+const C={
+ middle:{
+  1:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',5],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',3],['اللغة الصينية',3],['المهارات الرقمية',2],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',2],['المهارات الحياتية والأسرية',1]],
+  2:null,
+  3:[['القرآن الكريم والدراسات الإسلامية',5],['اللغة العربية',4],['الدراسات الاجتماعية',2],['الرياضيات',6],['العلوم',4],['اللغة الإنجليزية',4],['المهارات الرقمية',2],['التربية الفنية',2],['التربية البدنية والدفاع عن النفس',2],['المهارات الحياتية والأسرية',1],['التفكير الناقد',2]]
+ }};
+C.middle[2]=C.middle[1];
+
+const S={
+ 1:{
+  common:{
+   1:[['القرآن الكريم وتفسيره',4],['الرياضيات 1',5],['اللغة الإنجليزية 1',5],['التقنية الرقمية 1',3],['الأحياء 1',3],['الكيمياء 1',3],['الكفايات اللغوية 1',4],['التفكير الناقد',3],['التربية الصحية والبدنية 1',2]],
+   2:[['الرياضيات 1',5],['اللغة الإنجليزية 1',5],['التقنية الرقمية 1',3],['الفيزياء 1',3],['علم البيئة',2],['الكفايات اللغوية 1',3],['الحديث 1',2],['المعرفة المالية',2],['الدراسات الاجتماعية',3],['التربية المهنية',2],['التربية الصحية والبدنية 1',2]]
+  }
+ },
+ 2:{
+  general:{
+   1:[['الرياضيات 2',5],['اللغة الإنجليزية 2',5],['الكيمياء 2',5],['الأحياء 2',4],['الفيزياء 2',4],['الكفايات اللغوية 2',4],['التاريخ',3]],
+   2:[['الرياضيات 2',5],['اللغة الإنجليزية 2',5],['الكيمياء 2',5],['الأحياء 2',4],['التوحيد 1',2],['التقنية الرقمية 2',4],['الفنون',2],['اللياقة والثقافة الصحية',3]]
+  },
+  cs:{
+   1:[['الرياضيات 2',5],['اللغة الإنجليزية 2',5],['الكيمياء 2',5],['الأحياء 2',4],['الفيزياء 2',4],['الكفايات اللغوية 2',4],['الهندسة',3]],
+   2:[['الرياضيات 2',5],['اللغة الإنجليزية 2',5],['الكيمياء 2',5],['الأحياء 2',4],['التوحيد 1',2],['علم البيانات',2],['إنترنت الأشياء',4],['اللياقة والثقافة الصحية',3]]
+  },
+  health:{
+   1:[['الرياضيات 2',5],['اللغة الإنجليزية 2',5],['الكيمياء 2',5],['الأحياء 2',4],['الكفايات اللغوية 2',4],['التقنية الرقمية 2',4],['مبادئ العلوم الصحية',3]],
+   2:[['الرياضيات 2',5],['اللغة الإنجليزية 2',5],['الكيمياء 2',5],['الأحياء 2',4],['الفيزياء 2',4],['التوحيد 1',2],['مبادئ العلوم الصحية',2],['اللياقة والثقافة الصحية',3]]
+  },
+  business:{
+   1:[['اللغة الإنجليزية 2',5],['التوحيد 1',2],['الكفايات اللغوية 2',4],['صناعة القرار في الأعمال',5],['مقدمة في الأعمال',4],['الإدارة المالية',3],['التقنية الرقمية 2',4],['الفنون',2]],
+   2:[['اللغة الإنجليزية 2',5],['التفسير 1',2],['الدراسات اللغوية',3],['صناعة القرار في الأعمال',4],['مقدمة في الأعمال',3],['مبادئ الاقتصاد',3],['الإدارة المالية',3],['التاريخ',3],['اللياقة والثقافة الصحية',3]]
+  },
+  sharia:{
+   1:[['القرآن الكريم 1',5],['اللغة الإنجليزية 2',5],['التوحيد 1',2],['الحديث 2',2],['القراءات 1',4],['الكفايات اللغوية 2',4],['التقنية الرقمية 2',4],['اللياقة والثقافة الصحية',3]],
+   2:[['القرآن الكريم 1',5],['اللغة الإنجليزية 2',5],['التوحيد 2',2],['القراءات 2',3],['علوم القرآن',4],['التفسير 1',2],['الدراسات اللغوية',3],['التاريخ',3],['الفنون',2]]
+  }
+ },
+ 3:{
+  general:{
+   1:[['الرياضيات 3',4],['اللغة الإنجليزية 3',4],['الكيمياء 3',3],['الفيزياء 3',5],['علوم الأرض والفضاء',3],['التقنية الرقمية 3',2],['التربية الصحية والبدنية 2',3],['البحث ومصادر المعلومات',2],['المجال الاختياري',5]],
+   2:[['الرياضيات 3',4],['اللغة الإنجليزية 3',4],['الفيزياء 3',5],['علوم الأرض والفضاء',3],['الفقه 1',2],['الدراسات الأدبية',2],['الدراسات النفسية والاجتماعية',2],['المواطنة الرقمية',2],['الجغرافيا',2],['المهارات الحياتية',2],['المجال الاختياري',2]]
+  },
+  cs:{
+   1:[['الرياضيات 3',4],['اللغة الإنجليزية 3',4],['الكيمياء 3',3],['الفيزياء 3',5],['علوم الأرض والفضاء',3],['الدراسات الأدبية',2],['الذكاء الاصطناعي',2],['الأمن السيبراني',2],['التصميم الهندسي',3],['البحث ومصادر المعلومات',2]],
+   2:[['الرياضيات 3',4],['اللغة الإنجليزية 3',4],['الفيزياء 3',5],['علوم الأرض والفضاء',3],['الفقه 1',2],['الذكاء الاصطناعي',3],['هندسة البرمجيات',3],['المهارات الحياتية',2],['التربية الصحية والبدنية 2',3],['مشروع التخرج',2]]
+  },
+  health:{
+   1:[['الرياضيات 3',4],['اللغة الإنجليزية 3',4],['الكيمياء 3',3],['الفيزياء 3',5],['علوم الأرض والفضاء',3],['الدراسات الأدبية',2],['الرعاية الصحية',3],['أنظمة جسم الإنسان',3],['الإحصاء',2],['البحث ومصادر المعلومات',2]],
+   2:[['الرياضيات 3',4],['اللغة الإنجليزية 3',4],['الفيزياء 3',5],['علوم الأرض والفضاء',3],['الفقه 1',2],['الرعاية الصحية',3],['أنظمة جسم الإنسان',2],['المهارات الحياتية',2],['التربية الصحية والبدنية 2',3],['مشروع التخرج',2]]
+  },
+  business:{
+   1:[['اللغة الإنجليزية 3',4],['الفقه 1',2],['الدراسات الأدبية',2],['مبادئ الإدارة',3],['إدارة الفعاليات',4],['تخطيط الحملات التسويقية',3],['مبادئ القانون',3],['الإحصاء',2],['الجغرافيا',2],['التربية الصحية والبدنية 2',3],['البحث ومصادر المعلومات',2]],
+   2:[['اللغة الإنجليزية 3',4],['الدراسات النفسية والاجتماعية',2],['الدراسات البلاغية والنقدية',3],['إدارة الفعاليات',3],['تخطيط الحملات التسويقية',4],['السكرتارية والإدارة المكتبية',3],['مبادئ القانون',4],['تطبيقات في القانون',2],['المواطنة الرقمية',2],['المهارات الحياتية',2],['مشروع التخرج',2]]
+  },
+  sharia:{
+   1:[['القرآن الكريم 2',5],['اللغة الإنجليزية 3',4],['التفسير 2',2],['الفقه 1',2],['مصطلح الحديث',2],['الدراسات الأدبية',2],['مبادئ القانون',3],['المواطنة الرقمية',2],['الجغرافيا',2],['المهارات الحياتية',2],['التربية الصحية والبدنية 2',3],['البحث ومصادر المعلومات',2]],
+   2:[['القرآن الكريم 2',5],['اللغة الإنجليزية 3',4],['الفقه 2',4],['أصول الفقه',2],['الفرائض',2],['الدراسات النفسية والاجتماعية',2],['الدراسات البلاغية والنقدية',3],['مبادئ القانون',4],['تطبيقات في القانون',2],['مشروع التخرج',2]]
+  }
+ }
+};
+
+function getSubjects(type,stage,grade,path,term){
+ if(type==='general' && stage==='secondary'){
+   if(+grade===1) return S[1].common[term];
+   return S[grade][path][term];
+ }
+ if(type==='general') return P[stage][grade];
+ if(type==='tahfiz') return T[stage][grade];
+ return C[stage][grade];
+}
+function getActivity(type,stage,grade,path,term,lowerExtra){
+ if(type==='general'){
+   if(stage==='lower') return {official:3,topup:lowerExtra?1:0,target:lowerExtra?4:3};
+   if(stage==='upper') return {official:2,topup:1,target:3};
+   if(stage==='middle') return {official:1,topup:2,target:3};
+   if(stage==='secondary'){
+     if(+grade===1) return {official:0,topup:3,target:3};
+     if(+grade===2){
+       if(path==='business'||path==='sharia') return {official:3,topup:0,target:3};
+       return {official:2,topup:1,target:3};
+     }
+     return +term===1?{official:1,topup:2,target:3}:{official:2,topup:1,target:3};
+   }
+ }
+ if(type==='tahfiz'){
+   if(stage==='lower') return {official:1,topup:2,target:3};
+   return {official:0,topup:3,target:3};
+ }
+ return {official:0,topup:3,target:3};
+}
+
+const $=id=>document.getElementById(id);
+let lastLabel='',lastA=null,lastResult=null,lastSchedules=[],lastNeeded=0;
+function load(){try{return JSON.parse(localStorage.getItem('weekly_activity_all_v4')||'{}')}catch{return {}}}
+function getSelectedExcluded(){
+  const sel=$('excludedSubject'); if(!sel)return [];
+  // If the placeholder "بدون استثناء" is selected alone, treat as none.
+  if(sel.selectedOptions && sel.selectedOptions.length){
+    const vals=Array.from(sel.selectedOptions).map(o=>o.value).filter(Boolean);
+    return vals;
+  }
+  return [];
+}
+function save(){
+ const excl=getSelectedExcluded();
+ localStorage.setItem('weekly_activity_all_v4',JSON.stringify({
+   planType:$('planType').value,stage:$('stage').value,grade:$('grade').value,path:$('path').value,
+   term:$('term').value,weeks:$('weeks').value,classes:$('classes').value,rotate:$('rotate').checked,lowerExtra:$('lowerExtra').checked,
+   excludedSubject:excl
+ }));
+}
+function fillPlanTypes(saved){
+ $('planType').innerHTML=Object.entries(PLAN_TYPES).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ if(saved && PLAN_TYPES[saved]) $('planType').value=saved;
+}
+function fillStages(saved){
+ const t=$('planType').value;
+ $('stage').innerHTML=Object.entries(STAGES[t]).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ if(saved && STAGES[t][saved]) $('stage').value=saved;
+ fillGrades();
+}
+function fillGrades(saved){
+ const st=$('stage').value;
+ const labels=GRADE_LABELS[st];
+ $('grade').innerHTML=Object.entries(labels).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ if(saved && labels[saved]) $('grade').value=saved;
+ updatePath();
+}
+function updatePath(saved){
+ const secondary=$('planType').value==='general' && $('stage').value==='secondary';
+ const needPath=secondary && +$('grade').value>1;
+ $('pathWrap').classList.toggle('hidden',!needPath);
+ $('path').innerHTML=Object.entries(PATHS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ if(saved && PATHS[saved]) $('path').value=saved;
+ updateOptional();
+ updateExcludedSubject();
+ render();
+}
+function updateOptional(){
+ const show=$('planType').value==='general' && $('stage').value==='lower';
+ $('lowerExtraWrap').classList.toggle('hidden',!show);
+ if(!show)$('lowerExtra').checked=false;
+}
+function updateExcludedSubject(saved){
+ if(!$('excludedSubject'))return;
+ const type=$('planType').value,stage=$('stage').value,grade=$('grade').value,path=$('path').value||'general',term=+$('term').value;
+ const subjects=getSubjects(type,stage,grade,path,term)||[];
+ const sel=$('excludedSubject');
+ sel.innerHTML='<option value="">بدون استثناء</option>'+subjects.map(([name])=>`<option value="${name}">${name}</option>`).join('');
+ // restore multi-selection
+ let current=saved!==undefined?saved:(load().excludedSubject);
+ if(typeof current==='string')current=current?[current]:[];
+ if(Array.isArray(current)){
+   Array.from(sel.options).forEach(o=>{ o.selected=current.includes(o.value); });
+   if(current.length===0 && sel.options[0]) sel.options[0].selected=true;
+ }
+}
+
+function allocate(subjects,needed,weeks,excludedSubject){
+ const exSet=new Set(Array.isArray(excludedSubject)?excludedSubject:(excludedSubject?[excludedSubject]:[]));
+ const rows=subjects.map(([name,w])=>({name,w,excluded:exSet.has(name),cap:exSet.has(name)?0:Math.floor(w*weeks*.10),use:0}));
+ const totalCap=rows.reduce((s,r)=>s+r.cap,0);
+ if(needed<=0)return {rows,totalCap,allocated:0};
+ if(totalCap<=needed){rows.forEach(r=>r.use=r.cap);return {rows,totalCap,allocated:totalCap};}
+ let used=0;
+ rows.forEach(r=>{
+   const raw=needed*(r.cap/totalCap);
+   r.use=Math.min(r.cap,Math.floor(raw)); r.frac=raw-Math.floor(raw); used+=r.use;
+ });
+ while(used<needed){
+   const c=rows.filter(r=>r.use<r.cap).sort((a,b)=>(b.frac-a.frac)||(b.cap-b.use)-(a.cap-a.use)||(b.w-a.w));
+   if(!c.length)break; c[0].use++; c[0].frac=0; used++;
+ }
+ return {rows,totalCap,allocated:used};
+}
+function groupedBlocks(rows){
+ return rows.filter(r=>r.use>0).map(r=>({name:r.name,count:r.use}));
+}
+function buildGroupedSequence(rows,classIndex,spread){
+ const blocks=groupedBlocks(rows);
+ if(!blocks.length)return [];
+ const ordered=spread&&blocks.length>1?[...blocks.slice(classIndex%blocks.length),...blocks.slice(0,classIndex%blocks.length)]:blocks;
+ const seq=[];
+ ordered.forEach(b=>{for(let i=0;i<b.count;i++)seq.push(b.name);});
+ return seq;
+}
+function classSchedule(rows,weeks,topup,classIndex,spread){
+ const arr=buildGroupedSequence(rows,classIndex,spread);
+ let k=0; const schedule=[];
+ for(let w=0;w<weeks;w++){
+   const items=[];
+   for(let j=0;j<topup;j++)if(k<arr.length)items.push(arr[k++]);
+   schedule.push(items);
+ }
+ return schedule;
+}
+
+let currentPrintTarget='both';
+
+function buildPrintPage4(label,a,classes,weeks,schedules,startClass,endClass,startWeek,endWeek,pageNo,totalPages){
+ let head='<tr><th>الأسبوع</th>';
+ for(let c=startClass;c<=endClass;c++) head += `<th>${label}<br>شعبة ${c}</th>`;
+ head += '</tr>';
+ let body='';
+ for(let w=startWeek-1;w<endWeek;w++){
+   body += `<tr><td>الأسبوع ${w+1}</td>`;
+   for(let c=startClass-1;c<endClass;c++){
+     const items=schedules[c][w];
+     body += `<td>${items.length?items.map(x=>`<span class="pr-chip">${x}</span>`).join(' '):'—'}</td>`;
+   }
+   body += '</tr>';
+ }
+ return `<section class="print-page ${pageNo<totalPages?'print-page-break':''}">
+  ${pageNo===1?'<div class="pr-bar"><span></span><span></span><span></span></div>':''}
+   <div class="pr-head">
+     <div class="pr-head-main"><div class="pr-kicker">عمل اجتهادي مساعد للمدارس في تنظيم حصص النشاط</div><h1 class="pr-title">جدول التنفيذ الأسبوعي حسب الشعب</h1><div class="pr-subtitle">توزيع واضح يبين المادة التي تتحول حصتها للنشاط في كل شعبة أسبوعًا بأسبوع بصورة عملية، مع تجميع المادة نفسها في أسابيع متتالية قدر الإمكان.</div></div>
+     <div class="pr-side"><div class="pr-info"><small>المرحلة والصف</small><b>${label}</b><small style="margin-top:5px">الشعب والأسابيع</small><b>الشعب ${startClass}-${endClass} | الأسابيع ${startWeek}-${endWeek}</b></div><div class="pr-target"><div><strong>${a.target}</strong><span>حصص نشاط<br>لكل شعبة أسبوعيًا</span></div></div></div>
+   </div>
+   <div class="pr-strip"><b>طريقة القراءة:</b> كل خلية توضح حصص المواد التي يتم الاستفادة منها للنشاط في تلك الشعبة خلال الأسبوع المحدد. الترتيب هنا مجمّع قدر الإمكان بحيث تظهر المادة نفسها في أسابيع متتالية داخل الشعبة. إجمالي السحب الأسبوعي لجميع الشعب = <b>${a.topup*classes} حصة صفية</b>.</div>
+   <div class="pr-section-title"><h2>جدول التنفيذ الأسبوعي حسب الشعب</h2><span class="pr-number">4</span></div>
+   <div class="pr-table-wrap"><table class="pr-table pr-week"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+   <div class="pr-note">يمكن للمدرسة اعتماد هذا الجدول بصورته الحالية، أو استخدامه كأساس لتجميع المادة نفسها في أسابيع متتالية داخل الشعبة ثم توزيع بدايات المواد بين الشعب بحسب الواقع المدرسي.</div>
+   <div class="pr-foot"><div class="pr-footer"><span>جدول التنفيذ الأسبوعي | صفحة ${pageNo} من ${totalPages}</span></div>
+ </section>`;
+}
+
+function renderPrintLayout(label,a,classes,weeks,result,schedules,needed){
+ $('prLabel3').textContent=label;
+ $('prMeta3').textContent=`الفصل ${$('term').value==='1'?'الأول':'الثاني'} - ${weeks} أسبوع - ${classes} شعب`;
+ $('prTarget3').textContent=a.target;
+ $('prSubtitle3').textContent=`وفق المرحلة والفصل وعدد الشعب.`;
+ const excludedPrint=getSelectedExcluded();
+ const excludedPrintText=excludedPrint.join('، ');
+ $('prStrip3').innerHTML=`<b>الخلاصة:</b> ${a.official} حصة رسمية + ${a.topup} من المواد = <b>${a.target} حصص نشاط أسبوعيًا لكل شعبة</b>. ومع ${classes} شعب يكون إجمالي السحب الأسبوعي <b>${a.topup*classes} حصة صفية</b>.${excludedPrint.length?` <b>الاستثناء:</b> ${excludedPrintText} غير داخلة في احتساب 10٪.`:''} هذا التصور أداة مساعدة لتنظيم التنفيذ ولا يغني عن الرجوع للدليل المعتمد.`;
+ const src=$('prSourceRows'); src.innerHTML='';
+ result.rows.forEach(r=>{
+   const tr=document.createElement('tr');
+   tr.innerHTML=`<td class="subject">${r.name}${r.excluded?' — مستثناة':''}</td><td>${r.w}</td><td><span class="pr-chip">${r.excluded?'—':r.cap}</span></td><td><span class="pr-chip">${r.excluded?'0':r.use}</span></td><td class="execution">${r.excluded?'مستثناة من احتساب نسبة 10٪':(r.use?`حصة واحدة أسبوعيًا لمدة ${r.use} ${r.use===1?'أسبوع':'أسابيع'} لكل شعبة`:'لا نحتاج السحب منها')}</td><td>${r.use*classes}</td>`;
+   src.appendChild(tr);
+ });
+ const total=document.createElement('tr'); total.className='pr-total';
+ total.innerHTML=`<td>الإجمالي</td><td>—</td><td>—</td><td>${needed}</td><td>إجمالي الحصص المطلوب استكمالها لكل شعبة خلال الفترة</td><td>${needed*classes}</td>`;
+ src.appendChild(total);
+ $('prStatus3').textContent=result.allocated>=needed?`✓ تم توزيع ${needed} حصة استكمال لكل شعبة بالكامل. إجمالي جميع الشعب خلال الفترة = ${needed*classes} حصة صفية.`:`تنبيه: المتاح ${result.allocated} من أصل ${needed} حصة لكل شعبة.`;
+ // section 4: landscape-friendly pagination. Up to 5 classes and 9 weeks per printed page.
+ const classesPerPage=5, weeksPerPage=9;
+ const classChunks=Math.ceil(classes/classesPerPage), weekChunks=Math.ceil(weeks/weeksPerPage);
+ const totalPages=classChunks*weekChunks, pages=[]; let pageNo=0;
+ for(let cp=0;cp<classChunks;cp++){
+   const startClass=cp*classesPerPage+1, endClass=Math.min(classes,(cp+1)*classesPerPage);
+   for(let wp=0;wp<weekChunks;wp++){
+     const startWeek=wp*weeksPerPage+1, endWeek=Math.min(weeks,(wp+1)*weeksPerPage);
+     pageNo++;
+     pages.push(buildPrintPage4(label,a,classes,weeks,schedules,startClass,endClass,startWeek,endWeek,pageNo,totalPages));
+   }
+ }
+ $('printPages4').innerHTML=pages.join('');
+}
+
+function printReport(target){
+ currentPrintTarget=target;
+ render();
+ document.body.dataset.printTarget=target;
+ setTimeout(()=>window.print(),120);
+}
+window.addEventListener('afterprint',()=>{delete document.body.dataset.printTarget;});
+
+function render(){
+ save();
+ const type=$('planType').value,stage=$('stage').value,grade=$('grade').value,path=$('path').value||'general',term=+$('term').value;
+ const weeks=Math.max(1,+$('weeks').value||1),classes=Math.max(1,+$('classes').value||1),rotate=$('rotate').checked;
+ const lowerExtra=$('lowerExtra').checked;
+ const excludedSubject=getSelectedExcluded();
+ const excludedJoined=excludedSubject.join('، ');
+ const subjects=getSubjects(type,stage,grade,path,term);
+ const a=getActivity(type,stage,grade,path,term,lowerExtra);
+ const needed=a.topup*weeks;
+ const result=allocate(subjects,needed,weeks,excludedSubject);
+ const label=(stage==='secondary'&&+grade>1?`${GRADE_LABELS.secondary[grade]} — ${PATHS[path]}`:GRADE_LABELS[stage][grade]);
+
+ $('official').textContent=a.official;$('topup').textContent=a.topup;$('target').textContent=a.target;$('classesKpi').textContent=classes;
+ $('headline').innerHTML=a.topup===0?`${label}: <em>لا تحتاج إلى استكمال من المواد.</em>`:`${label}: تحتاج <em>${a.topup} ${a.topup===1?'حصة':'حصص'} من المواد أسبوعيًا لكل شعبة</em>.`;
+ $('equation').innerHTML=a.topup===0
+   ? `<b>متحقق:</b> ${a.official} حصص نشاط رسمية أسبوعيًا لكل شعبة.`
+   : `<b>لكل شعبة:</b> ${a.official} رسمية + ${a.topup} من المواد = ${a.target} حصص نشاط أسبوعيًا. ومع ${classes} شعب يكون السحب الأسبوعي على مستوى الصف = <b>${a.topup*classes} حصة صفية</b>.`;
+
+ const isLowerGeneral=type==='general'&&stage==='lower';
+ $('lowerAchieved').classList.toggle('hidden',!isLowerGeneral || lowerExtra);
+ if(isLowerGeneral && !lowerExtra){
+   $('lowerAchieved').innerHTML='✓ النسبة متحققة وفق النموذج المعتمد: 3 حصص نشاط أسبوعيًا. لا يلزم استخدام 10٪، إلا إذا رغبت المدرسة في إضافة حصة نشاط رابعة.';
+ }
+ $('excludedNotice').classList.toggle('hidden',!excludedSubject.length || a.topup===0);
+ if(excludedSubject.length && a.topup>0)$('excludedNotice').innerHTML=`<b>استثناء مفعّل:</b> تم استثناء <b>${excludedJoined}</b> من احتساب نسبة 10٪، ولن يتم استخدام أي حصة منها في الاستكمال. سيُعاد توزيع الاحتياج على بقية المواد المتاحة.`;
+ $('sourceNote').innerHTML=`${excludedSubject.length?` تم استثناء مادة <b>${excludedJoined}</b> من الاحتساب.`:''} مرجع مواد الفصل: نموذج الحصص الأسبوعية — الإصدار الخامس، مع مراجعة بنية المسارات وأسماء المواد وفق دليل الخطط الدراسية — الإصدار السادس.`;
+ ['summaryCard','sourceCard','weeklyCard','rotateWrap'].forEach(id=>$(id).classList.toggle('hidden',a.topup===0));
+ $('groupPlan').classList.toggle('hidden',a.topup===0);
+ if(a.topup===0){
+   $('prSourceRows').innerHTML=''; $('printPages4').innerHTML=''; $('groupPlanRows').innerHTML='';
+   return;
+ }
+
+ const summary=$('classSummary');summary.innerHTML='';
+ for(let c=1;c<=classes;c++){
+   const card=document.createElement('div');card.className='classCard';
+   const lis=result.rows.filter(r=>r.use>0).map(r=>`<li><strong>${r.name}</strong>: تمت الاستفادة من حصة واحدة أسبوعيًا لمدة <strong>${r.use}</strong> ${r.use===1?'أسبوع':'أسابيع'}</li>`).join('');
+   card.innerHTML=`<h3>${label} — شعبة ${c}</h3><ul>${lis}</ul>`;
+   summary.appendChild(card);
+ }
+
+ const tbody=$('sourceRows');tbody.innerHTML='';
+ result.rows.forEach(r=>{
+   const tr=document.createElement('tr');
+   tr.innerHTML=`<td><strong>${r.name}</strong>${r.excluded?' <span class="badge">مستثناة</span>':''}</td><td class="center">${r.w}</td><td class="center">${r.excluded?'<span class="badge">—</span>':`<span class="badge">${r.cap}</span>`}</td><td class="center">${r.excluded?'<span class="badge">0</span>':`<span class="badge ok">${r.use}</span>`}</td><td>${r.excluded?'مستثناة من احتساب نسبة 10٪':(r.use?`حصة واحدة في الأسبوع لمدة ${r.use} ${r.use===1?'أسبوع':'أسابيع'} لكل شعبة`:'لا نحتاج السحب منها')}</td><td class="center">${r.use*classes}</td>`;
+   tbody.appendChild(tr);
+ });
+ $('status').innerHTML=result.allocated>=needed
+  ? `✓ تم توزيع ${needed} حصة استكمال لكل شعبة بالكامل. إجمالي جميع الشعب خلال الفترة = ${needed*classes} حصة صفية.`
+  : `تنبيه: المتاح بالتقريب الآمن داخل 10٪ هو ${result.allocated} من ${needed} حصة لكل شعبة.`;
+
+ const groupRows=$('groupPlanRows'); groupRows.innerHTML='';
+ result.rows.filter(r=>r.use>0).forEach((r,idx)=>{
+   const div=document.createElement('div'); div.className='row';
+   const startClass=(idx%classes)+1;
+   const nextClass=((idx+1)%classes)+1;
+   div.innerHTML=`<strong>${r.name}</strong>: لكل شعبة <b>حصة واحدة أسبوعيًا لمدة ${r.use} ${r.use===1?'أسبوع':'أسابيع'} متتالية</b>. <small>مقترح تنفيذ مبسّط: تبدأ هذه المادة في شعبة ${startClass} أولًا، ثم تنتقل بعد انتهاء مدتها إلى شعبة ${nextClass} أو إلى الشعبة التالية بحسب تنظيم المدرسة، مع بقاء الحسبة الأصلية ثابتة لجميع الشعب.</small>`;
+   groupRows.appendChild(div);
+ });
+
+ let head='<tr><th>الأسبوع</th>';
+ for(let c=1;c<=classes;c++)head+=`<th>${label}<br>شعبة ${c}</th>`;
+ head+='</tr>';$('weekHead').innerHTML=head;
+ const schedules=[];for(let c=0;c<classes;c++)schedules.push(classSchedule(result.rows,weeks,a.topup,c,rotate));
+ let body='';
+ for(let w=0;w<weeks;w++){
+   body+=`<tr><td class="weekNo">الأسبوع ${w+1}</td>`;
+   for(let c=0;c<classes;c++){
+     const items=schedules[c][w];
+     body+=`<td><div class="subjectCell">${items.length?items.map(x=>`<span class="pill teal">${x}</span>`).join(''):'<span class="empty">لا يوجد سحب</span>'}</div></td>`;
+   }
+   body+='</tr>';
+ }
+ $('weekBody').innerHTML=body;
+ lastLabel=label;lastA=a;lastResult=result;lastSchedules=schedules;lastNeeded=needed;
+ renderPrintLayout(label,a,classes,weeks,result,schedules,needed);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ const s=load();
+ fillPlanTypes(s.planType);
+ fillStages(s.stage);
+ if(s.grade && GRADE_LABELS[$('stage').value][s.grade])$('grade').value=s.grade;
+ $('term').value=s.term||'1';$('weeks').value=s.weeks||17;$('classes').value=s.classes||5;$('rotate').checked=s.rotate!==false;$('lowerExtra').checked=!!s.lowerExtra;
+ updatePath(s.path);
+ ['planType'].forEach(id=>$(id).addEventListener('change',()=>fillStages()));
+ $('stage').addEventListener('change',()=>fillGrades());
+ $('grade').addEventListener('change',()=>updatePath());
+ $('path').addEventListener('change',()=>{updateExcludedSubject();render();});
+ $('term').addEventListener('change',()=>{updateExcludedSubject();render();});
+ // multi-select excluded subjects: re-render on any selection change
+ $('excludedSubject').addEventListener('change',()=>{updateExcludedSubject(getSelectedExcluded());render();});
+ ['lowerExtra','rotate'].forEach(id=>$(id).addEventListener('change',render));
+ ['weeks','classes'].forEach(id=>$(id).addEventListener('input',render));
+ updateOptional();updateExcludedSubject(s.excludedSubject);render();
+});
+</script>
+</body>
+</html>
