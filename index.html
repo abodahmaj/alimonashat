@@ -193,7 +193,7 @@ th{background:#f6f9fb;color:#536c7d;font-weight:800}.center{text-align:center}
         </div>
       <label class="check optional hidden" id="lowerExtraWrap"><input id="lowerExtra" type="checkbox"><span><strong>إضافة حصة نشاط رابعة</strong><br>الصفوف الأولية محققة أصلًا بـ3 حصص. فعّل هذا الخيار فقط إذا رغبت المدرسة في حصة رابعة والاستفادة من 10٪.</span></label>
       <label class="check" id="rotateWrap"><input id="rotate" type="checkbox" checked><span><strong>تجميع المواد بشكل متتالٍ مع توزيع بداياتها بين الشعب</strong><br>عند التفعيل تظهر المادة نفسها في أسابيع متصلة داخل الشعبة، مع تغيير نقطة البداية بين الشعب لتقليل التطابق الكامل.</span></label>
-      <div class="actions"><button class="btn primary" onclick="printReport('both')">طباعة ملخص ١٠٪ وجدول التنفيذ</button><button class="btn secondary" onclick="location.reload()">تحديث</button></div><div class="save">الحفظ تلقائي على هذا الجهاز.</div>
+      <div class="actions"><button class="btn primary" onclick="printReport('both')">طباعة ملخص ١٠٪ وجدول التنفيذ</button><button class="btn secondary" onclick="exportToExcel()">تصدير إلى إكسل</button><button class="btn secondary" onclick="location.reload()">تحديث</button></div><div class="save">الحفظ تلقائي على هذا الجهاز.</div>
     </aside>
 
     <main class="main">
@@ -590,6 +590,62 @@ function renderPrintLayout(label,a,classes,weeks,result,schedules,needed){
    }
  }
  $('printPages4').innerHTML=pages.join('');
+}
+
+/* Export the current plan to a CSV that Excel opens as a clean table.
+   The CSV uses BOM + comma delimiter so Excel maps columns correctly,
+   and the weekly schedule is emitted as one row per week (Week, Class, Subject). */
+function exportToExcel(){
+  if(!lastA || !lastResult){ alert('⚠️ لا توجد بيانات للتصدير. الرجاء اختيار إعدادات الخطة وتوقع النتائج أولاً.'); return; }
+  const a=lastA, rows=lastResult.rows, schedules=lastSchedules||[], classes=+lastA?0:(0); // classes from lastA not stored; use length of schedules
+  const cls=schedules.length||0;
+  let csv='نظام أحرف،
+\n';
+  csv+='مرحلة/صف،"'+lastLabel+'"
+\n';
+  csv+='الفصل،"'+($('term').value==='1'?'الأول':'الثاني')+'"
+\n';
+  csv+='عدد الأسابيع،'+$('weeks').value+'
+\n';
+  csv+='عدد الشعب،'+$('classes').value+'
+\n';
+  csv+='حصص نشاط رسمية لكل شعبة أسبوعيا،'+a.official+'
+\n';
+  csv+='الاستكمال من المواد لكل شعبة أسبوعيا،'+a.topup+'
+\n';
+  csv+='إجمالي النشاط المستهدف لكل شعبة أسبوعيا،'+a.target+'
+\n';
+  csv+='
+\n';
+  csv+='ملخص نسبة ١٠٪ للمواد (CSV)
+\n';
+  csv+='المادة,حصصها أسبوعياً,سقف 10٪ لكل شعبة,المستخدم لكل شعبة,الصيغة التنفيذية,إجمالي جميع الشعب
+\n';
+  rows.forEach(r=>{
+    const exec=r.excluded?'مستثناة من احتساب نسبة 10٪':(r.use?`حصة واحدة في الأسبوع لمدة ${r.use} ${r.use===1?'أسبوع':'أسابيع'} لكل شعبة`:'لا نحتاج السحب منها');
+    csv+='"'+r.name+'",'+r.w+','+r.cap+','+r.use+',"'+exec+'",'+r.use*cls+'
+\n';
+  });
+  csv+='
+\n';
+  csv+='جدول التنفيذ الأسبوعي حسب الشعب (CSV)
+\n';
+  csv+='الأسبوع,الشعبة,المواد
+\n';
+  for(let w=0;w<+$('weeks').value;w++){
+    for(let c=0;c<cls;c++){
+      const items=schedules[c]&&schedules[c][w]?schedules[c][w]:[];
+      csv+='"+الأسبوع '+(w+1)+'"","شعبة '+(c+1)+'","'+items.join('، ')+'"
+\n';
+    }
+  }
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a2=document.createElement('a'); a2.href=url;
+  a2.download=('جدول_النشاط_1448_'+lastLabel.replace(/[^\wء-ي]/g,'_')+'.csv').replace(/__+/g,'_');
+  document.body.appendChild(a2); a2.click(); document.body.removeChild(a2);
+  URL.revokeObjectURL(url);
+  alert('✅ تم تصدير ملف CSV جاهز للصق في إكسل. افتحه — سيظهر التنسيق تلقائياً.');
 }
 
 function printReport(target){
